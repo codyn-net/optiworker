@@ -1,0 +1,97 @@
+#!/usr/bin/python
+
+from optparse import OptionParser
+import os
+
+parser = OptionParser()
+
+parser.add_option("--prefix",
+                  dest="prefix",
+                  help="install architecture-independent files in PREFIX [/usr/local]",
+                  metavar="DIR",
+                  default="/usr/local")
+
+parser.add_option("--exec-prefix",
+                  dest="exec_prefix",
+                  help="install architecture-dependent files in EPREFIX [PREFIX]",
+                  metavar="DIR")
+
+parser.add_option("--bindir",
+                  dest="bindir",
+                  help="user executables [EPREFIX/bin]",
+                  metavar="DIR")
+
+parser.add_option("--libexecdir",
+                  dest="libexecdir",
+                  help="program executables [EPREFIX/libexec]",
+                  metavar="DIR")
+
+parser.add_option("--sysconfdir",
+                  dest="sysconfdir",
+                  help="read-only single-machine data [PREFIX/etc]",
+                  metavar="DIR")
+
+parser.add_option("--datarootdir",
+                  dest="datarootdir",
+                  help="read-only arch.-independent data root [PREFIX/share]",
+                  metavar="DIR")
+
+parser.add_option("--datadir",
+                  dest="datadir",
+                  help="read-only arch.-independent data [DATAROOTDIR]",
+                  metavar="DIR")
+
+parser.add_option("--mandir",
+                  dest="mandir",
+                  help="man documentation [DATAROOTDIR/man]",
+                  metavar="DIR")
+
+(options, args) = parser.parse_args()
+
+if not options.exec_prefix:
+    options.exec_prefix = options.prefix
+
+if not options.bindir:
+    options.bindir = os.path.join(options.exec_prefix, "bin")
+
+if not options.libexecdir:
+    options.libexecdir = os.path.join(options.exec_prefix, "libexec")
+
+if not options.sysconfdir:
+    options.sysconfdir = os.path.join(options.prefix, "etc")
+
+if not options.datarootdir:
+    options.datarootdir = os.path.join(options.prefix, "share")
+
+if not options.datadir:
+    options.datadir = options.datarootdir
+
+if not options.mandir:
+    options.mandir = options.datarootdir
+
+root = os.path.dirname(__file__)
+cfgdir = os.path.join(root, 'config')
+
+try:
+    os.mkdir(cfgdir)
+except:
+    pass
+
+f = file(os.path.join(cfgdir, 'config.go'), 'w')
+f.write("package config\n\n")
+f.write("const (\n")
+
+items = []
+
+for item in parser._get_all_options()[1:]:
+    name = item.dest
+
+    cname = name.title().replace("_", "")
+
+    f.write("\t%s = \"%s\"\n" % (cname, getattr(options, name).replace('"', '\\"')))
+
+f.write(")\n")
+
+f.close()
+
+# vi:ts=4:et
