@@ -1,7 +1,6 @@
 package main
 
 import (
-	"./config"
 	"os"
 	"path/filepath"
 	"time"
@@ -59,7 +58,7 @@ func (x *DispatcherRepo) scan() {
 		return
 	}
 
-	dispdir := filepath.Join(config.Libexecdir, "liboptimization-dispatchers-2.0")
+	dispdir := filepath.Join(AppConfig.Libexecdir, "liboptimization-dispatchers-2.0")
 	x.scanDir(dispdir)
 
 	epath := os.Getenv("OPTIMIZATION_DISPATCHERS_PATH")

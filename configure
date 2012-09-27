@@ -70,27 +70,30 @@ if not options.mandir:
     options.mandir = options.datarootdir
 
 root = os.path.dirname(__file__)
-cfgdir = os.path.join(root, 'config')
+cfgdir = root
 
 try:
     os.mkdir(cfgdir)
 except:
     pass
 
-f = file(os.path.join(cfgdir, 'config.go'), 'w')
-f.write("package config\n\n")
-f.write("const (\n")
+f = file(os.path.join(cfgdir, 'appconfig.go'), 'w')
+f.write("package main\n\n")
+f.write("var AppConfig = struct {\n")
 
 items = []
+vals = []
 
 for item in parser._get_all_options()[1:]:
     name = item.dest
-
     cname = name.title().replace("_", "")
+    vals.append("\t\"%s\",\n" % (getattr(options, name).replace('"', '\\"'),))
 
-    f.write("\t%s = \"%s\"\n" % (cname, getattr(options, name).replace('"', '\\"')))
+    f.write("\t%s string\n" % (cname,))
 
-f.write(")\n")
+f.write("} {\n")
+f.write("".join(vals))
+f.write("}\n")
 
 f.close()
 
