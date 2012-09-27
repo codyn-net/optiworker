@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"flag"
 	"fmt"
 	"os"
 	"os/user"
@@ -12,15 +11,15 @@ import (
 type Config struct {
 	ProtocolVersion uint
 
-	DiscoveryNamespace string
-	DiscoveryAddress   string
+	DiscoveryNamespace string `short:"d" long:"discovery-namespace" description:"The discovery namespace"`
+	DiscoveryAddress   string `long:"discovery-address" description:"The discovery address"`
 
-	ListenAddress string
+	ListenAddress string `short:"l" long:"listen-address" description:"The listen address"`
 
-	UseAuthentication  bool
-	DispatcherPriority uint
+	UseAuthentication  bool `long:"use-authentication" description:"Whether or not to use authentication"`
+	DispatcherPriority uint `long:"dispatcher-priority" description:"The dispatcher process priority"`
 
-	Parallel int
+	Parallel int `short:"p" long:"parallel" description:"The number of workers to run in parallel. Zero or negative values indicate to use the number of available CPUs minus the specified value"`
 }
 
 func (c *Config) Load(filename string) {
@@ -32,38 +31,6 @@ func (c *Config) Load(filename string) {
 
 	dec := json.NewDecoder(f)
 	dec.Decode(c)
-}
-
-func (c *Config) SetupParse() {
-	flag.StringVar(&c.DiscoveryNamespace,
-		"discovery",
-		c.DiscoveryNamespace,
-		"Discovery namespace")
-
-	flag.StringVar(&c.DiscoveryAddress,
-		"discovery-address",
-		c.DiscoveryAddress,
-		"Discovery address")
-
-	flag.StringVar(&c.ListenAddress,
-		"listen-address",
-		c.ListenAddress,
-		"Listen address")
-
-	flag.BoolVar(&c.UseAuthentication,
-		"use-authentication",
-		c.UseAuthentication,
-		"Use authentication")
-
-	flag.IntVar(&c.Parallel,
-		"parallel",
-		c.Parallel,
-		"Run N workers in parallel (if the specified value <= 0 then number of parallel workers is value + NUM_CPUS)")
-
-	flag.UintVar(&c.DispatcherPriority,
-		"dispatcher-priority",
-		c.DispatcherPriority,
-		"Specify dispatcher priority (> 0)")
 }
 
 func NewConfig() *Config {
