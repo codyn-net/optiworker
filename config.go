@@ -51,7 +51,7 @@ func NewConfig() *Config {
 			constants.DiscoveryGroup,
 			constants.DiscoveryPort),
 
-		ListenAddress:      fmt.Sprintf(":%v", constants.WorkerPort),
+		ListenAddress:      ":0",
 		UseAuthentication:  false,
 		Parallel:           1,
 		DispatcherPriority: 0,
