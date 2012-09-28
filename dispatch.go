@@ -170,7 +170,7 @@ func (x *Dispatch) checkCurrentDispatcher(master *Master, id uint32) bool {
 func (x *Dispatch) Dispatch() {
 	dispatcher := x.dispatchers.Peek()
 
-	if dispatcher.Running {
+	if dispatcher == nil || dispatcher.Running {
 		return
 	}
 
