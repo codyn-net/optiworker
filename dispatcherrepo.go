@@ -16,7 +16,7 @@ type DispatcherRepo struct {
 }
 
 func init() {
-	dispatcherRepo := &DispatcherRepo{
+	dispatcherRepo = &DispatcherRepo{
 		lastScan:     time.Unix(0, 0),
 		scanThrottle: 10,
 		scanned:      make(map[string]time.Time),
