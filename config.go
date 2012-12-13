@@ -20,6 +20,8 @@ type Config struct {
 	DispatcherPriority uint `long:"dispatcher-priority" description:"The dispatcher process priority"`
 
 	Parallel int `short:"p" long:"parallel" description:"The number of workers to run in parallel. Zero or negative values indicate to use the number of available CPUs minus the specified value"`
+
+	Version func() error `short:"v" long:"version" description:"Print the application version."`
 }
 
 func (c *Config) Load(filename string) {
@@ -55,5 +57,22 @@ func NewConfig() *Config {
 		UseAuthentication:  false,
 		Parallel:           1,
 		DispatcherPriority: 0,
+
+		Version: func() error {
+			fmt.Printf("%v - version ", path.Base(os.Args[0]))
+
+			for i, v := range AppConfig.Version {
+				if i != 0 {
+					fmt.Printf(".")
+				}
+
+				fmt.Printf("%v", v)
+			}
+
+			fmt.Println()
+			os.Exit(1)
+
+			return nil
+		},
 	}
 }
