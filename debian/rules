@@ -2,9 +2,11 @@
 
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
+export GOPATH=$(shell pwd)/debian/go
 
-export GOPATH=$(pwd)/debian/go
-mkdir -p $(GOPATH)
+PATH := $(GOPATH)/bin:${PATH}
+
+export PATH
 
 %:
 	dh $@
