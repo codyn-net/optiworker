@@ -37,7 +37,7 @@ func setupApps() {
 func main() {
 	TheConfig = NewConfig()
 
-	TheConfig.Load(path.Join(AppConfig.Sysconfdir, "optiworker", "config.json"))
+	TheConfig.Load(path.Join(AppConfig.SysConfDir, "optiworker", "config.json"))
 
 	_, err := flags.Parse(TheConfig)
 
