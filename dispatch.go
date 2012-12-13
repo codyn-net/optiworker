@@ -127,7 +127,10 @@ func NewDispatch(address string, id uint) (*Dispatch, error) {
 
 	if id != 0 {
 		i, _ := strconv.ParseUint(naddr.Port, 10, 32)
-		naddr.Port = fmt.Sprintf("%v", uint(i)+id)
+
+		if i != 0 {
+			naddr.Port = fmt.Sprintf("%v", uint(i)+id)
+		}
 	}
 
 	ret.conn, err = naddr.Listen()
