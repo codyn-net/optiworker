@@ -325,6 +325,12 @@ func (x *Dispatcher) readStdout(reader io.Reader) {
 
 		if err == nil {
 			x.HasResponse = true
+
+			r := msg.(*task.Response)
+
+			r.Id = x.Task.Id
+			r.Uniqueid = x.Task.Uniqueid
+
 			x.OnResponse.EmitAsync(msg)
 		} else if !x.HasResponse {
 			optimization.Events <- func() {
