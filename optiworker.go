@@ -1,7 +1,7 @@
 package main
 
 import (
-	"ponyo.epfl.ch/go/get/flags"
+	"github.com/jessevdk/go-flags"
 	"fmt"
 	"os"
 	"os/signal"
