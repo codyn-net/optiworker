@@ -9,7 +9,7 @@ import (
 )
 
 type Config struct {
-	ProtocolVersion uint
+	ProtocolVersion uint `json:"-"`
 
 	DiscoveryNamespace string `short:"d" long:"discovery-namespace" description:"The discovery namespace"`
 	DiscoveryAddress   string `long:"discovery-address" description:"The discovery address"`
