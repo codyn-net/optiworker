@@ -18,6 +18,7 @@ import (
 )
 
 type Dispatcher struct {
+	Id      uint
 	Master *Master
 	Task   *task.Task
 
@@ -31,8 +32,9 @@ type Dispatcher struct {
 	OnResponse *optimization.Signal
 }
 
-func NewDispatcher(master *Master, t *task.Task) *Dispatcher {
+func NewDispatcher(id uint, master *Master, t *task.Task) *Dispatcher {
 	return &Dispatcher{
+		Id:         id,
 		Master:     master,
 		Task:       t,
 		Running:    false,
@@ -119,6 +121,8 @@ func (x *Dispatcher) Run() {
 		parts := strings.Split(setting.GetValue(), ",")
 		x.splitEnv(parts, envmap)
 	}
+
+	envmap["OPTIWORKER_PROCESS_NUMBER"] = fmt.Sprintf("%v", x.Id)
 
 	if TheConfig.UseAuthentication {
 		optirooter, err := exec.LookPath("optirooter")
