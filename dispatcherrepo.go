@@ -3,7 +3,9 @@ package main
 import (
 	"os"
 	"path/filepath"
+	"path"
 	"time"
+	"ponyo.epfl.ch/go/get/optimization/go/optimization/log"
 )
 
 var dispatcherRepo *DispatcherRepo
@@ -26,9 +28,11 @@ func init() {
 	dispatcherRepo.scan()
 }
 
-func (x *DispatcherRepo) scanDir(path string) {
-	if when, ok := x.scanned[path]; ok {
-		info, err := os.Stat(path)
+func (x *DispatcherRepo) scanDir(p string) {
+	log.W("Scanning for dispatchers in: %s", p)
+
+	if when, ok := x.scanned[p]; ok {
+		info, err := os.Stat(p)
 
 		if err != nil {
 			return
@@ -38,19 +42,29 @@ func (x *DispatcherRepo) scanDir(path string) {
 			return
 		}
 
-		x.scanned[path] = info.ModTime()
+		x.scanned[p] = info.ModTime()
 	} else {
-		filepath.Walk(path, func(child string, info os.FileInfo, err error) error {
-			if err != nil || info.IsDir() {
-				return filepath.SkipDir
-			}
-
-			x.cache[child] = filepath.Join(path, child)
-			return nil
-		})
-
-		x.scanned[path] = time.Now()
+		x.scanned[p] = time.Now()
 	}
+
+	filepath.Walk(p, func(child string, info os.FileInfo, err error) error {
+		if child == p {
+			return nil
+		}
+
+		if err != nil || info.IsDir() {
+			return filepath.SkipDir
+		}
+
+		if (info.Mode().Perm() & 0001) == 0 {
+			return nil
+		}
+
+		log.W("Found possible dispatcher: %s", child)
+
+		x.cache[path.Base(child)] = child
+		return nil
+	})
 }
 
 func (x *DispatcherRepo) scan() {
@@ -58,7 +72,7 @@ func (x *DispatcherRepo) scan() {
 		return
 	}
 
-	dispdir := filepath.Join(AppConfig.Libexecdir, "liboptimization-dispatchers-2.0")
+	dispdir := filepath.Join(AppConfig.LibExecDir, "liboptimization-dispatchers-2.0")
 	x.scanDir(dispdir)
 
 	epath := os.Getenv("OPTIMIZATION_DISPATCHERS_PATH")
