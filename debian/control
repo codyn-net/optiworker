@@ -4,7 +4,8 @@ Maintainer: Jesse van den Kieboom <jesse.vandenkieboom@epfl.ch>
 Build-Depends: debhelper (>= 7),
                golang-go,
                protobuf-compiler,
-               git
+               git,
+               curl
 Standards-Version: 3.8.0
 Section: libs
 Homepage: http://biorob.epfl.ch
