@@ -24,6 +24,7 @@ type Dispatcher struct {
 
 	cmd    *exec.Cmd
 	stderr *bytes.Buffer
+	stdin   io.WriteCloser
 
 	Running              bool
 	AuthenticationNeeded bool
@@ -47,13 +48,7 @@ func (x *Dispatcher) SendTokenResponse(response string) error {
 		return nil
 	}
 
-	stdin, err := x.cmd.StdinPipe()
-
-	if err != nil {
-		return err
-	}
-
-	stdin.Write([]byte(response))
+	x.stdin.Write([]byte(response))
 	return nil
 }
 
@@ -98,6 +93,8 @@ func (x *Dispatcher) Run() {
 	if x.Running {
 		return
 	}
+
+	var err error
 
 	// Find dispatcher to execute
 	dispatcher := FindDispatcher(x.Task.GetDispatcher())
@@ -155,41 +152,67 @@ func (x *Dispatcher) Run() {
 
 	x.HasResponse = false
 
-	err := x.cmd.Start()
+	defer func() {
+		if err != nil {
+			x.cmd = nil
+			x.AuthenticationNeeded = false
 
-	if err != nil {
-		x.cmd = nil
-		x.AuthenticationNeeded = false
-
-		x.Fail(task.Response_Failure_DispatcherNotFound,
-			fmt.Sprintf("Failed to run dispatcher: %v", err))
-
-		return
-	}
+			x.Fail(task.Response_Failure_DispatcherNotFound,
+			       fmt.Sprintf("Failed to run dispatcher: %v", err))
+		}
+	}()
 
 	// Start reading from stdout and stderr
 	stdout, err := x.cmd.StdoutPipe()
 
 	if err != nil {
-		x.cmd.Process.Release()
-		x.cmd = nil
-
-		x.Fail(task.Response_Failure_DispatcherNotFound,
-			fmt.Sprintf("Failed to run dispatcher: %v", err))
-
 		return
 	}
 
-	x.Running = true
+	defer func() {
+		if err != nil {
+			stdout.Close()
+		}
+	}()
 
 	go x.readStdout(stdout)
 
 	stderr, err := x.cmd.StderrPipe()
 
 	if err != nil {
-		x.stderr = new(bytes.Buffer)
-		go x.readStderr(stderr)
+		return
 	}
+
+	defer func() {
+		if err != nil {
+			stderr.Close()
+		}
+	}()
+
+	x.stderr = new(bytes.Buffer)
+	go x.readStderr(stderr)
+
+	stdin, err := x.cmd.StdinPipe()
+
+	if err != nil {
+		return
+	}
+
+	x.stdin = stdin
+
+	defer func() {
+		if err != nil {
+			stdin.Close()
+		}
+	}()
+
+	err = x.cmd.Start()
+
+	if err != nil {
+		return
+	}
+
+	x.Running = true
 
 	// Set process group to same as the worker
 	syscall.Setpgid(x.cmd.Process.Pid, syscall.Getpgrp())
@@ -225,7 +248,12 @@ func (x *Dispatcher) WriteTask() {
 		return
 	}
 
-	go stdin.Write(data)
+	stdin := x.stdin
+
+	go func() {
+		stdin.Write(data)
+		stdin.Close()
+	}()
 }
 
 func (x *Dispatcher) readAll(reader io.Reader, buf []byte) error {
