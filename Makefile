@@ -15,3 +15,9 @@ uninstall-data:
 
 distcheck: $(TARGET)
 	tar -cJf $(TARGET)-$(version).tar.xz --transform='s,^,$(TARGET)-$(version)/,g' configure.go configure $(SOURCES) Makefile data/example.conf
+
+debian-test: distcheck
+	tar -xJf $(TARGET)-$(version).tar.xz; \
+	tar -czf $(TARGET)_$(version).orig.tar.gz $(TARGET)-$(version); \
+	cp -r debian $(TARGET)-$(version); \
+	(cd $(TARGET)-$(version) && dpkg-buildpackage)
