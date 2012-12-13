@@ -72,6 +72,8 @@ type Dispatch struct {
 
 	masters     []*Master
 	dispatchers *DispatcherQueue
+
+	Id uint
 }
 
 func (x *Dispatch) accept() {
@@ -114,6 +116,7 @@ func NewDispatch(address string, id uint) (*Dispatch, error) {
 	ret := new(Dispatch)
 
 	ret.dispatchers = new(DispatcherQueue)
+	ret.Id = id
 
 	naddr := optinet.ParseAddress(address)
 	err := naddr.Resolve()
@@ -184,7 +187,7 @@ func (x *Dispatch) Dispatch() {
 }
 
 func (x *Dispatch) handleTask(master *Master, msg *task.Task) {
-	x.dispatchers.Push(NewDispatcher(master, msg))
+	x.dispatchers.Push(NewDispatcher(x.Id, master, msg))
 	x.Dispatch()
 }
 
