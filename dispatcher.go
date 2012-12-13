@@ -230,16 +230,7 @@ func (x *Dispatcher) Run() {
 }
 
 func (x *Dispatcher) WriteTask() {
-	stdin, err := x.cmd.StdinPipe()
-
-	if err != nil {
-		x.Fail(task.Response_Failure_Disconnected,
-			fmt.Sprintf("Failed to write task: %v", err))
-
-		return
-	}
-
-	data, err := optimization.EncodeMessage(x.Task)
+	data, err := optimization.EncodeCommunication(x.Task)
 
 	if err != nil {
 		x.Fail(task.Response_Failure_WrongRequest,
@@ -326,7 +317,7 @@ func (x *Dispatcher) readStdout(reader io.Reader) {
 		x.Master.Challenge(x.Task, string(challenge[0:len(challenge)-1]))
 	}
 
-	optimization.ReadMessages(reader, new(task.Response), func(msg interface{}, err error) bool {
+	optimization.ReadCommunication(reader, new(task.Response), func(msg interface{}, err error) bool {
 		// Make sure we are still reading for the current command
 		if x.cmd != cmd {
 			return false
