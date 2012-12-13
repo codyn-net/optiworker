@@ -177,8 +177,21 @@ func (x *Dispatch) Dispatch() {
 		return
 	}
 
+	log.W("Dispatching task: %v, %v", dispatcher.Task.GetId(), dispatcher.Task.GetUniqueid())
+
 	dispatcher.OnResponse.Connect(func(r *task.Response) {
 		// Relay response to master
+		log.W("Task finished: %v, %v: (%v, %v): %v",
+		      dispatcher.Task.GetId(),
+		      dispatcher.Task.GetUniqueid(),
+		      r.GetId(),
+		      r.GetUniqueid(),
+		      r.GetStatus())
+
+		if r.GetStatus() == task.Response_Failed {
+			log.W("Failed because: %s", r.GetFailure())
+		}
+
 		dispatcher.Master.Respond(r)
 		x.Finished(dispatcher)
 	})
@@ -187,6 +200,8 @@ func (x *Dispatch) Dispatch() {
 }
 
 func (x *Dispatch) handleTask(master *Master, msg *task.Task) {
+	log.W("Received task: %v, %v", msg.GetId(), msg.GetUniqueid())
+
 	x.dispatchers.Push(NewDispatcher(x.Id, master, msg))
 	x.Dispatch()
 }
