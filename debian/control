@@ -2,7 +2,8 @@ Source: optiworker
 Priority: extra
 Maintainer: Jesse van den Kieboom <jesse.vandenkieboom@epfl.ch>
 Build-Depends: debhelper (>= 7),
-               golang-go
+               golang-go,
+               protobuf-compiler
 Standards-Version: 3.8.0
 Section: libs
 Homepage: http://biorob.epfl.ch
