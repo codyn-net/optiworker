@@ -8,7 +8,7 @@ install: install-data
 uninstall: uninstall-data
 
 install-data:
-	cp data/example.conf $(DESTDIR)$(datadir)/optiworker/example.conf
+	mkdir -p $(DESTDIR)$(datadir)/optiworker && cp data/example.conf $(DESTDIR)$(datadir)/optiworker/example.conf
 
 uninstall-data:
 	rm -f $(DESTDIR)$(datadir)/optiworker/example.conf
