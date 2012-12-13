@@ -14,4 +14,4 @@ uninstall-data:
 	rm -f $(DESTDIR)$(datadir)/optiworker/example.conf
 
 distcheck: $(TARGET)
-	tar -cJf $(TARGET)-$(version).tar.xz configure.go configure $(SOURCES) Makefile data/example.conf
+	tar -cJf $(TARGET)-$(version).tar.xz --transform='s,^,$(TARGET)-$(version)/,g' configure.go configure $(SOURCES) Makefile data/example.conf
