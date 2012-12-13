@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/user"
 	"ponyo.epfl.ch/go/get/optimization/go/optimization/constants"
+	"path"
 )
 
 type Config struct {
@@ -32,7 +33,10 @@ func (c *Config) Load(filename string) {
 	}
 
 	dec := json.NewDecoder(f)
-	dec.Decode(c)
+
+	if err := dec.Decode(c); err != nil {
+		fmt.Printf("Failed to parse config file: %s\n", err)
+	}
 }
 
 func NewConfig() *Config {
