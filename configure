@@ -1,3 +1,22 @@
 #!/bin/bash
 
+# Get protobuf
+protobuf=code.google.com/p/goprotobuf
+
+if [ ! -d $GOPATH/src/$protobuf ]; then
+	go get -v $protobuf
+	(cd $GOPATH/src/code.google.com/p/goprotobuf && make install)
+fi
+
+# Get optimization stuff
+optimization=ponyo.epfl.ch/go/get/optimization/go/optimization
+
+if [ ! -d $GOPATH/src/$optimization ]; then
+	go get -v $optimization
+	(cd $GOPATH/src/$optimization && make V=1 fetch-proto PROTODIR=$GOPATH/tmp && make V=1 install PROTODIR=$GOPATH/tmp)
+fi
+
+go get -v github.com/jessevdk/go-flags
+go get -v github.com/jessevdk/go-configure
+
 go run configure.go "$@"
