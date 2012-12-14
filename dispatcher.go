@@ -323,6 +323,11 @@ func (x *Dispatcher) readStdout(reader io.Reader) {
 			return false
 		}
 
+		// Continue reading
+		if msg == nil {
+			return true
+		}
+
 		if err == nil {
 			x.HasResponse = true
 
