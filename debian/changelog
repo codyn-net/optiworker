@@ -1,3 +1,10 @@
+optiworker (2.12-1) UNRELEASED; urgency=low
+
+  * New upstream release
+  * Fixed reading last message
+
+ -- Jesse van den Kieboom <jesse.vandenkieboom@epfl.ch>  Fri, 14 Dec 2012 13:00:36 +0100
+
 optiworker (2.11-1) UNRELEASED; urgency=low
 
   * New upstream release
