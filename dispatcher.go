@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	task "optimization/messages/task.pb"
+	"ponyo.epfl.ch/go/get/optimization/go/optimization/messages/task.pb"
 	"os"
 	"os/exec"
 	"ponyo.epfl.ch/go/get/optimization/go/optimization"
