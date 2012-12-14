@@ -10,3 +10,6 @@ export PATH
 
 %:
 	dh $@
+
+override_dh_auto_configure:
+	dh_auto_configure -- --prefix=/usr --libexecdir=\$${prefix}/libexec
