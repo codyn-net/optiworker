@@ -19,4 +19,4 @@ for i in $fetch; do
 	fi
 done
 
-go run configure.go "$@"
+go run build/configure.go "$@"
