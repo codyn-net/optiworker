@@ -227,6 +227,8 @@ func (x *Dispatcher) Run() {
 	if !x.AuthenticationNeeded {
 		x.WriteTask()
 	}
+
+	cmd := x.cmd
 }
 
 func (x *Dispatcher) WriteTask() {
@@ -353,13 +355,18 @@ func (x *Dispatcher) Cancel() {
 		return
 	}
 
-	// Kill dispatcher
-	x.cmd.Process.Signal(syscall.SIGTERM)
-
 	cmd := x.cmd
 	x.cmd = nil
 
 	go func() {
+		// Wait for small amount of time to let program properly shutdown
+		// by itself
+		optimization.Events.Timeout(time.Second, func() {
+			if cmd != nil {
+				cmd.Process.Signal(syscall.SIGTERM)
+			}
+		})
+
 		// Set a timeout to kill the process real hard
 		optimization.Events.Timeout(3*time.Second, func() {
 			// Only kill the process if it hasn't been terminated
