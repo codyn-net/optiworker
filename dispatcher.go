@@ -227,8 +227,6 @@ func (x *Dispatcher) Run() {
 	if !x.AuthenticationNeeded {
 		x.WriteTask()
 	}
-
-	cmd := x.cmd
 }
 
 func (x *Dispatcher) WriteTask() {
