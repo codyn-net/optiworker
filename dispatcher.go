@@ -23,6 +23,7 @@ type Dispatcher struct {
 	Task   *task.Task
 
 	cmd    *exec.Cmd
+
 	stderr *bytes.Buffer
 	stdin   io.WriteCloser
 
@@ -262,7 +263,9 @@ func (x *Dispatcher) readAll(reader io.Reader, buf []byte) error {
 	return nil
 }
 
-func (x *Dispatcher) readStderr(reader io.Reader) {
+func (x *Dispatcher) readStderr(reader io.ReadCloser) {
+	defer reader.Close()
+
 	cmd := x.cmd
 
 	data := make([]byte, 512)
@@ -289,7 +292,9 @@ func (x *Dispatcher) readStderr(reader io.Reader) {
 	}
 }
 
-func (x *Dispatcher) readStdout(reader io.Reader) {
+func (x *Dispatcher) readStdout(reader io.ReadCloser) {
+	defer reader.Close()
+
 	cmd := x.cmd
 
 	if x.AuthenticationNeeded {
@@ -352,6 +357,8 @@ func (x *Dispatcher) Cancel() {
 	if !x.Running {
 		return
 	}
+
+	x.stdin.Close()
 
 	cmd := x.cmd
 	x.cmd = nil
