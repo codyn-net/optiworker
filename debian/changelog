@@ -1,3 +1,10 @@
+optiworker (2.13-1) UNRELEASED; urgency=low
+
+  * New upstream release
+  * Fixed corruption of master messages
+
+ -- Jesse van den Kieboom <jesse.vandenkieboom@epfl.ch>  Tue, 05 Mar 2013 23:41:53 +0100
+
 optiworker (2.12-1) UNRELEASED; urgency=low
 
   * New upstream release
