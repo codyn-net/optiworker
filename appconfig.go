@@ -40,5 +40,5 @@ var AppConfig = struct {
 	"/usr/local/share/man",
 	"/usr/local",
 	"/usr/local/etc",
-	[]int{2, 12},
+	[]int{2, 13},
 }
