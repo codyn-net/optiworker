@@ -91,7 +91,9 @@ func (x *Dispatch) accept() {
 		log.W("Master connected from %v", remote.RemoteAddr().String())
 
 		master.OnMessage.Connect(func(msg *task.Communication) {
-			x.Handle(master, msg)
+			optimization.Events <- func() {
+				x.Handle(master, msg)
+			}
 		})
 
 		optimization.Events <- func() {
