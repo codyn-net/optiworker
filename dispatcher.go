@@ -328,12 +328,11 @@ func (x *Dispatcher) readStdout(reader io.ReadCloser) {
 			return false
 		}
 
-		// Continue reading
-		if msg == nil {
-			return true
-		}
-
 		if err == nil {
+			if msg == nil {
+				return true
+			}
+
 			x.HasResponse = true
 
 			r := msg.(*task.Response)
