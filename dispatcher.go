@@ -143,8 +143,17 @@ func (x *Dispatcher) Run() {
 
 		x.AuthenticationNeeded = true
 	} else {
+		realdp, err := exec.LookPath(dispatcher)
+
+		if err != nil {
+			x.Fail(task.Response_Failure_DispatcherNotFound,
+			       fmt.Sprintf("Unable to find dispatcher: %v", err))
+
+			return
+		}
+
 		// Launch dispatcher
-		x.cmd = exec.Command(dispatcher)
+		x.cmd = exec.Command(realdp)
 		x.cmd.Env = x.joinEnv(envmap)
 		x.cmd.Dir, _ = os.Getwd()
 
