@@ -9,6 +9,7 @@ import (
 	"ponyo.epfl.ch/go/get/optimization/go/optimization"
 	"runtime"
 	"syscall"
+	"path/filepath"
 )
 
 var _ = fmt.Println
@@ -36,6 +37,10 @@ func setupApps() {
 
 func main() {
 	TheConfig = NewConfig()
+
+	optimization.DispatcherRepository.SearchPath = []string {
+		filepath.Join(AppConfig.LibExecDir, "liboptimization-dispatchers-2.0"),
+	}
 
 	TheConfig.Load(path.Join(AppConfig.SysConfDir, "optiworker", "config.json"))
 

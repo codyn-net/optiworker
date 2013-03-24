@@ -98,7 +98,7 @@ func (x *Dispatcher) Run() {
 	var err error
 
 	// Find dispatcher to execute
-	dispatcher := FindDispatcher(x.Task.GetDispatcher())
+	dispatcher := optimization.DispatcherRepository.Find(x.Task.GetDispatcher())
 
 	if dispatcher == "" {
 		x.Fail(task.Response_Failure_DispatcherNotFound,
