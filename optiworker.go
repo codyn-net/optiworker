@@ -39,7 +39,7 @@ func main() {
 	TheConfig = NewConfig()
 
 	optimization.DispatcherRepository.SearchPath = []string {
-		filepath.Join(AppConfig.LibExecDir, "liboptimization-dispatchers-2.0"),
+		filepath.Join(AppConfig.LibExecDir, optimization.DispatcherRepository.DispatcherPath),
 	}
 
 	TheConfig.Load(path.Join(AppConfig.SysConfDir, "optiworker", "config.json"))
