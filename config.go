@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/user"
-	"ponyo.epfl.ch/go/get/optimization/go/optimization/constants"
+	"ponyo.epfl.ch/go/get/optimization-go/optimization/constants"
 	"path"
 )
 

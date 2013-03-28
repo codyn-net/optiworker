@@ -4,10 +4,10 @@ import (
 	"container/list"
 	"fmt"
 	"net"
-	"ponyo.epfl.ch/go/get/optimization/go/optimization/messages/task.pb"
-	"ponyo.epfl.ch/go/get/optimization/go/optimization"
-	"ponyo.epfl.ch/go/get/optimization/go/optimization/log"
-	optinet "ponyo.epfl.ch/go/get/optimization/go/optimization/net"
+	"ponyo.epfl.ch/go/get/optimization-go/optimization/messages/task.pb"
+	"ponyo.epfl.ch/go/get/optimization-go/optimization"
+	"ponyo.epfl.ch/go/get/optimization-go/optimization/log"
+	optinet "ponyo.epfl.ch/go/get/optimization-go/optimization/net"
 	"strconv"
 )
 

@@ -6,7 +6,7 @@ import (
 	"os"
 	"os/signal"
 	"path"
-	"ponyo.epfl.ch/go/get/optimization/go/optimization"
+	"ponyo.epfl.ch/go/get/optimization-go/optimization"
 	"runtime"
 	"syscall"
 	"path/filepath"

@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
-	"ponyo.epfl.ch/go/get/optimization/go/optimization"
-	"ponyo.epfl.ch/go/get/optimization/go/optimization/log"
+	"ponyo.epfl.ch/go/get/optimization-go/optimization"
+	"ponyo.epfl.ch/go/get/optimization-go/optimization/log"
 )
 
 var _ = fmt.Println
