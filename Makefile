@@ -14,10 +14,19 @@ uninstall-data:
 	rm -f $(DESTDIR)$(datadir)/optiworker/example.conf
 
 distcheck: $(TARGET)
-	tar -cJf $(TARGET)-$(version).tar.xz --transform='s,^,$(TARGET)-$(version)/,g' build/configure.go configure $(SOURCES) Makefile data/example.conf
+	@echo "[GEN] $(TARGET)-$(version).tar.gz"; \
+	rm -rf $(TARGET)-$(version); \
+	mkdir $(TARGET)-$(version); \
+	mkdir $(TARGET)-$(version)/build; \
+	mkdir $(TARGET)-$(version)/data; \
+	cp build/configure.go $(TARGET)-$(version)/build/; \
+	cp data/example.conf $(TARGET)-$(version)/data/; \
+	cp configure Makefile $(sort $(SOURCES)) $(TARGET)-$(version)/; \
+	tar -cjf $(TARGET)-$(version).tar.bz2 $(TARGET)-$(version); \
+	rm -rf $(TARGET)-$(version)
 
 debian-test: distcheck
-	tar -xJf $(TARGET)-$(version).tar.xz; \
+	tar -xjf $(TARGET)-$(version).tar.bz2; \
 	tar -czf $(TARGET)_$(version).orig.tar.gz $(TARGET)-$(version); \
 	cp -r debian $(TARGET)-$(version); \
 	(cd $(TARGET)-$(version) && dpkg-buildpackage)
