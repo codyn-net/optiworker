@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	configure.Version = []int {2, 14}
+	configure.Version = []int {3, 0}
 	configure.Target = "optiworker"
 
 	configure.Configure(nil)
