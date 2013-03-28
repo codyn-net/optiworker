@@ -11,7 +11,7 @@ if [ ! -d $gopath/src/$protobuf ]; then
 fi
 
 # Fetch and install optimization
-fetch="ponyo.epfl.ch/go/get/optimization/go/optimization github.com/jessevdk/go-flags github.com/jessevdk/go-configure"
+fetch="ponyo.epfl.ch/go/get/optimization-go/optimization github.com/jessevdk/go-flags github.com/jessevdk/go-configure"
 
 for i in $fetch; do
 	if [ ! -d $gopath/src/$i ]; then
