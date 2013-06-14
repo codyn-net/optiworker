@@ -185,8 +185,6 @@ func (x *Dispatcher) Run() {
 		}
 	}()
 
-	go x.readStdout(stdout)
-
 	stderr, err := x.cmd.StderrPipe()
 
 	if err != nil {
@@ -200,7 +198,6 @@ func (x *Dispatcher) Run() {
 	}()
 
 	x.stderr = new(bytes.Buffer)
-	go x.readStderr(stderr)
 
 	stdin, err := x.cmd.StdinPipe()
 
@@ -221,6 +218,9 @@ func (x *Dispatcher) Run() {
 	if err != nil {
 		return
 	}
+
+	go x.readStdout(stdout)
+	go x.readStderr(stderr)
 
 	x.Running = true
 
