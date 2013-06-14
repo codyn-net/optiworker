@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 	"os/user"
-	"ponyo.epfl.ch/go/get/optimization-go/optimization/constants"
 	"path"
+	"ponyo.epfl.ch/go/get/optimization-go/optimization/constants"
 )
 
 type Config struct {
@@ -18,7 +18,7 @@ type Config struct {
 	ListenAddress string `short:"l" long:"listen-address" description:"The listen address"`
 
 	UseAuthentication  bool `long:"use-authentication" description:"Whether or not to use authentication"`
-	DispatcherPriority int `long:"dispatcher-priority" description:"The dispatcher process priority"`
+	DispatcherPriority int  `long:"dispatcher-priority" description:"The dispatcher process priority"`
 
 	Parallel int `short:"p" long:"parallel" description:"The number of workers to run in parallel. Zero or negative values indicate to use the number of available CPUs minus the specified value"`
 

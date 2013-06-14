@@ -8,24 +8,24 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"ponyo.epfl.ch/go/get/optimization-go/optimization/messages/task.pb"
 	"os"
 	"os/exec"
 	"ponyo.epfl.ch/go/get/optimization-go/optimization"
+	"ponyo.epfl.ch/go/get/optimization-go/optimization/messages/task.pb"
 	"strings"
 	"syscall"
 	"time"
 )
 
 type Dispatcher struct {
-	Id      uint
+	Id     uint
 	Master *Master
 	Task   *task.Task
 
-	cmd    *exec.Cmd
+	cmd *exec.Cmd
 
 	stderr *bytes.Buffer
-	stdin   io.WriteCloser
+	stdin  io.WriteCloser
 
 	Running              bool
 	AuthenticationNeeded bool
@@ -147,7 +147,7 @@ func (x *Dispatcher) Run() {
 
 		if err != nil {
 			x.Fail(task.Response_Failure_DispatcherNotFound,
-			       fmt.Sprintf("Unable to find dispatcher: %v", err))
+				fmt.Sprintf("Unable to find dispatcher: %v", err))
 
 			return
 		}
@@ -168,7 +168,7 @@ func (x *Dispatcher) Run() {
 			x.AuthenticationNeeded = false
 
 			x.Fail(task.Response_Failure_DispatcherNotFound,
-			       fmt.Sprintf("Failed to run dispatcher: %v", err))
+				fmt.Sprintf("Failed to run dispatcher: %v", err))
 		}
 	}()
 

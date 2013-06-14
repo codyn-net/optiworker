@@ -4,9 +4,9 @@ import (
 	"container/list"
 	"fmt"
 	"net"
-	"ponyo.epfl.ch/go/get/optimization-go/optimization/messages/task.pb"
 	"ponyo.epfl.ch/go/get/optimization-go/optimization"
 	"ponyo.epfl.ch/go/get/optimization-go/optimization/log"
+	"ponyo.epfl.ch/go/get/optimization-go/optimization/messages/task.pb"
 	optinet "ponyo.epfl.ch/go/get/optimization-go/optimization/net"
 	"strconv"
 )
@@ -187,11 +187,11 @@ func (x *Dispatch) Dispatch() {
 	dispatcher.OnResponse.Connect(func(r *task.Response) {
 		// Relay response to master
 		log.W("Task finished: %v, %v: (%v, %v): %v",
-		      dispatcher.Task.GetId(),
-		      dispatcher.Task.GetUniqueid(),
-		      r.GetId(),
-		      r.GetUniqueid(),
-		      r.GetStatus())
+			dispatcher.Task.GetId(),
+			dispatcher.Task.GetUniqueid(),
+			r.GetId(),
+			r.GetUniqueid(),
+			r.GetStatus())
 
 		if r.GetStatus() == task.Response_Failed {
 			log.W("Failed because: %s", r.GetFailure())

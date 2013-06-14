@@ -1,15 +1,15 @@
 package main
 
 import (
-	"github.com/jessevdk/go-flags"
 	"fmt"
+	"github.com/jessevdk/go-flags"
 	"os"
 	"os/signal"
 	"path"
+	"path/filepath"
 	"ponyo.epfl.ch/go/get/optimization-go/optimization"
 	"runtime"
 	"syscall"
-	"path/filepath"
 )
 
 var _ = fmt.Println
@@ -38,7 +38,7 @@ func setupApps() {
 func main() {
 	TheConfig = NewConfig()
 
-	optimization.DispatcherRepository.SearchPath = []string {
+	optimization.DispatcherRepository.SearchPath = []string{
 		filepath.Join(AppConfig.LibExecDir, optimization.DispatcherRepository.DispatcherPath),
 	}
 
